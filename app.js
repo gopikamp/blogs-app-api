@@ -30,6 +30,25 @@ app.post("/add",async(req,res)=>{
     })
 })
 
+app.post("/viewall",(req,res)=>{
+    let token=req.headers.token
+    jwt.verify(token,"blogs-app",(error,decoded)=>{
+        if (decoded && decoded.email) {
+            postModel.find().then(
+                (items)=>{
+                    res.json(items)
+                }
+            ).catch(
+                (error)=>{
+                    res.json({"status":"error"})
+                }
+            )
+        } else {
+            res.json({"status":"invalid authentication"})
+        }
+    })
+})
+
 app.post("/signup",async(req,res)=>{
     let input = req.body
     let hashedPassword=await generateHashedPassword(input.password)
