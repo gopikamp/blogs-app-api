@@ -1,0 +1,11 @@
+const mongoose=require("mongoose")
+const postSchema=mongoose.Schema(
+    {
+        userId:{type:mongoose.Schema.Types.ObjectId,ref:"signup"},
+        Message:{type:String,required:true},
+        postedData:{type:Date,default:Date.now},
+    }
+)
+
+var postModel=mongoose.model("posts",postSchema)
+module.exports={postModel}
