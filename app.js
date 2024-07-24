@@ -30,6 +30,26 @@ app.post("/add",async(req,res)=>{
     })
 })
 
+app.post("/mypost",(req,res)=>{
+    let input=req.body
+    let token=req.headers.token
+    jwt.verify(token,"blogs-app",(error,decoded)=>{
+        if (decoded && decoded.email) {
+            postModel.find(input).then(
+                (items)=>{
+                    res.json(items)
+                }
+            ).catch(
+                (error)=>{
+                    res.json({"status":error})
+                }
+            )
+        } else {
+            res.json({"status":"invalid authentication"})
+        }
+    })
+})
+
 app.post("/viewall",(req,res)=>{
     let token=req.headers.token
     jwt.verify(token,"blogs-app",(error,decoded)=>{
